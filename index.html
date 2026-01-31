@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <title>Butterfly Door</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Butterfly Galaxy</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<canvas id="galaxy"></canvas>
+<canvas id="heart"></canvas>
+
 <div class="scene">
-  <div class="door"></div>
+  <div class="door" id="door"></div>
 
-  <img src="assets/butterfly.png" class="butterfly" id="butterfly">
+  <img src="assets/butterfly.webp" class="butterfly" id="butterfly">
 
-  <div class="text hint" id="hint">Chạm để bướm bay</div>
-  <div class="text name" id="name">Hoàng Phúc</div>
-  <div class="text final" id="final">
-    <div>giờ này chưa ngủ</div>
-    <div>rảnh quá coi tới đây luôn</div>
-  </div>
+  <div class="text" id="text1">Chạm để bướm bay</div>
+  <div class="text" id="text2">Hoàng Phúc</div>
+  <div class="text" id="text3">giờ này chưa ngủ</div>
+  <div class="text" id="text4">rảnh quá coi tới đây luôn</div>
+  <div class="text" id="text5">chúc anh ngủ ngon</div>
 </div>
 
 <script src="script.js"></script>
