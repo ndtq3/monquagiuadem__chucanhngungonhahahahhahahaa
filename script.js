@@ -1,51 +1,67 @@
 const butterfly = document.getElementById("butterfly");
 const door = document.getElementById("door");
 
+/* ===== TEXT (GIỮ NGUYÊN THỨ TỰ CŨ) ===== */
 const texts = [
-  text1, text2, text3, text4, text5
+  document.getElementById("text1"),
+  document.getElementById("text2"),
+  document.getElementById("text3"),
+  document.getElementById("text4"),
+  document.getElementById("text5"),
+  document.getElementById("text6"),
+  document.getElementById("text7")
 ];
 
 let currentText = 0;
 
+/* ===== RANDOM HELPER ===== */
 function random(min, max){
   return Math.random() * (max - min) + min;
 }
 
+/* ===== SHOW TEXT (BAY LỘN XỘN) ===== */
 function showText(i){
-  texts.forEach(t => t.classList.remove("show"));
+  texts.forEach(t => {
+    t.classList.remove("show");
+    t.style.opacity = 0;
+  });
 
   const t = texts[i];
 
-  // random lệch ban đầu
-  t.style.setProperty("--dx", random(-120,120) + "px");
-  t.style.setProperty("--dy", random(-60,60) + "px");
-  t.style.setProperty("--rot", random(-12,12) + "deg");
+  /* random lệch ban đầu */
+  t.style.setProperty("--dx", random(-150,150) + "px");
+  t.style.setProperty("--dy", random(-80,80) + "px");
+  t.style.setProperty("--rot", random(-15,15) + "deg");
 
-  // force reflow
+  /* force reflow */
   t.offsetHeight;
 
   t.classList.add("show");
+  t.style.opacity = 1;
 }
 
-/* Butterfly click */
+/* Show first text after 1s */
+setTimeout(() => showText(0), 1000);
+
+/* ===== BUTTERFLY CLICK ===== */
 butterfly.addEventListener("click", () => {
   butterfly.classList.add("fly");
   door.classList.add("open");
   startGalaxy();
 
   let delay = 2000;
-  for(let i=1;i<texts.length;i++){
+  for (let i = 1; i < texts.length; i++) {
     setTimeout(() => showText(i), delay);
     delay += 2000;
 
-    // Sau khi hiện text2 thì mới bật tim
-    if(i === 1){
+    /* Sau khi hiện "Chúc ngủ ngon" (text2) thì bật tim */
+    if (i === 1) {
       setTimeout(startHearts, delay);
     }
   }
 });
 
-/* ===== GALAXY ===== */
+/* ===== GALAXY EFFECT ===== */
 const gCanvas = document.getElementById("galaxy");
 const gCtx = gCanvas.getContext("2d");
 gCanvas.width = innerWidth;
@@ -53,32 +69,32 @@ gCanvas.height = innerHeight;
 
 let stars = [];
 
-function startGalaxy(){
-  for(let i=0;i<200;i++){
+function startGalaxy() {
+  for (let i = 0; i < 200; i++) {
     stars.push({
-      x:Math.random()*gCanvas.width,
-      y:Math.random()*gCanvas.height,
-      r:Math.random()*2,
-      v:Math.random()*0.6
+      x: Math.random() * gCanvas.width,
+      y: Math.random() * gCanvas.height,
+      r: Math.random() * 2,
+      v: Math.random() * 0.6
     });
   }
   animateGalaxy();
 }
 
-function animateGalaxy(){
+function animateGalaxy() {
   gCtx.clearRect(0,0,gCanvas.width,gCanvas.height);
-  stars.forEach(s=>{
+  stars.forEach(s => {
     gCtx.beginPath();
-    gCtx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    gCtx.fillStyle="rgba(255,255,255,0.8)";
+    gCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    gCtx.fillStyle = "rgba(255,255,255,0.8)";
     gCtx.fill();
-    s.y+=s.v;
-    if(s.y>gCanvas.height) s.y=0;
+    s.y += s.v;
+    if (s.y > gCanvas.height) s.y = 0;
   });
   requestAnimationFrame(animateGalaxy);
 }
 
-/* ===== HEART ===== */
+/* ===== HEART EFFECT ===== */
 const hCanvas = document.getElementById("heart");
 const hCtx = hCanvas.getContext("2d");
 hCanvas.width = innerWidth;
@@ -86,33 +102,34 @@ hCanvas.height = innerHeight;
 
 let hearts = [];
 
-function startHearts(){
-  setInterval(()=>{
+function startHearts() {
+  setInterval(() => {
     hearts.push({
-      t:0,
-      size:Math.random()*14+10
+      t: 0,
+      size: Math.random() * 12 + 8
     });
-  },120);
+  }, 150);
   animateHearts();
 }
 
-function heartX(t){
-  return 16*Math.pow(Math.sin(t),3);
-}
-function heartY(t){
-  return -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+function heartX(t) {
+  return 16 * Math.pow(Math.sin(t), 3);
 }
 
-function animateHearts(){
+function heartY(t) {
+  return -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+}
+
+function animateHearts() {
   hCtx.clearRect(0,0,hCanvas.width,hCanvas.height);
-  hearts.forEach(h=>{
-    h.t+=0.04;
-    const x=hCanvas.width/2+heartX(h.t)*h.size;
-    const y=hCanvas.height/2+heartY(h.t)*h.size;
+  hearts.forEach(h => {
+    h.t += 0.05;
+    const x = hCanvas.width/2 + heartX(h.t) * h.size;
+    const y = hCanvas.height/2 + heartY(h.t) * h.size;
 
-    hCtx.fillStyle="rgba(255,105,180,0.9)";
+    hCtx.fillStyle = "rgba(255,182,193,0.85)";
     hCtx.beginPath();
-    hCtx.arc(x,y,2.2,0,Math.PI*2);
+    hCtx.arc(x, y, 2, 0, Math.PI*2);
     hCtx.fill();
   });
   requestAnimationFrame(animateHearts);
