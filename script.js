@@ -29,26 +29,18 @@ $("butterfly").onclick = () => {
 
   /* ===== TIMELINE TEXT ===== */
   const texts = [
-    "text1",
-    "text2",
-    "text3",
-    "text4",
-    "text5",
-    "text6",
-    "text7",
-    "text10",
-    "text11",
-    "text12",
-    "text13",
-    "text14"
+    "text1", "text2", "text3", "text4",
+    "text5", "text6", "text7",
+    "text10", "text11", "text12",
+    "text13", "text14"
   ];
 
   let t = 1500;
 
   texts.forEach(id => {
     setTimeout(() => {
-      hideAllText();
-      show(id);
+      hideAllText();   // ❗ chữ cũ biến mất
+      show(id);        // ❗ chữ mới hiện
     }, t);
     t += 2000;
   });
@@ -67,18 +59,18 @@ $("butterfly").onclick = () => {
   setTimeout(() => show("imgT1"), 6500);
   setTimeout(() => show("imgT2"), 7000);
 
-  // LÈ LƯỠI
+  // QUỲNH
   setTimeout(() => show("imgQ"), 9000);
 
-  // KHÓC
+  // NƯỚC MẮT
   setTimeout(() => show("imgN"), 11500);
   setTimeout(() => hide("imgN"), 14000);
 
-  // CUỐI
+  // TRÁI TIM CUỐI
   setTimeout(() => show("imgH1"), 15000);
   setTimeout(() => show("imgH2"), 17500);
 
-  /* ===== HIỆU ỨNG ===== */
+  // HIỆU ỨNG
   startGalaxy();
   setTimeout(startHearts, 14000);
 };
