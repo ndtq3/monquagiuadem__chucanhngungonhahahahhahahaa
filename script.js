@@ -1,7 +1,6 @@
+/* ===== GET ELEMENTS ===== */
 const butterfly = document.getElementById("butterfly");
-const door = document.getElementById("door");
 
-/* ===== TEXT (GIỮ NGUYÊN THỨ TỰ CŨ) ===== */
 const texts = [
   document.getElementById("text1"),
   document.getElementById("text2"),
@@ -9,80 +8,78 @@ const texts = [
   document.getElementById("text4"),
   document.getElementById("text5"),
   document.getElementById("text6"),
-  document.getElementById("text7")
+  document.getElementById("text7"),
+  document.getElementById("text8"),
+  document.getElementById("text9"),
 ];
 
-let currentText = 0;
+/* ===== INIT TEXT STYLE ===== */
+texts.forEach(t => {
+  t.style.opacity = 0;
+  t.style.position = "absolute";
+  t.style.transition = "all 1.2s ease";
+});
 
-/* ===== RANDOM HELPER ===== */
-function random(min, max){
-  return Math.random() * (max - min) + min;
+/* ===== RANDOM POSITION ===== */
+function randomPosition(el) {
+  const x = Math.random() * 70 + 10; // %
+  const y = Math.random() * 70 + 10; // %
+  const r = Math.random() * 40 - 20; // rotate
+
+  el.style.left = x + "%";
+  el.style.top = y + "%";
+  el.style.transform = `translate(-50%, -50%) rotate(${r}deg)`;
 }
 
-/* ===== SHOW TEXT (BAY LỘN XỘN) ===== */
-function showText(i){
-  texts.forEach(t => {
-    t.classList.remove("show");
-    t.style.opacity = 0;
-  });
-
+/* ===== SHOW TEXT ===== */
+function showText(i) {
   const t = texts[i];
-
-  /* random lệch ban đầu */
-  t.style.setProperty("--dx", random(-150,150) + "px");
-  t.style.setProperty("--dy", random(-80,80) + "px");
-  t.style.setProperty("--rot", random(-15,15) + "deg");
-
-  /* force reflow */
-  t.offsetHeight;
-
-  t.classList.add("show");
+  randomPosition(t);
   t.style.opacity = 1;
 }
 
-/* Show first text after 1s */
-setTimeout(() => showText(0), 1000);
-
-/* ===== BUTTERFLY CLICK ===== */
+/* ===== CLICK BUTTERFLY ===== */
 butterfly.addEventListener("click", () => {
   butterfly.classList.add("fly");
-  door.classList.add("open");
-  startGalaxy();
 
-  let delay = 2000;
-  for (let i = 1; i < texts.length; i++) {
+  let delay = 500;
+  texts.forEach((_, i) => {
     setTimeout(() => showText(i), delay);
-    delay += 2000;
+    delay += 700;
+  });
 
-    /* Sau khi hiện "Chúc ngủ ngon" (text2) thì bật tim */
-    if (i === 1) {
-      setTimeout(startHearts, delay);
-    }
-  }
+  setTimeout(startGalaxy, 1000);
+  setTimeout(startHearts, delay + 500);
 });
 
-/* ===== GALAXY EFFECT ===== */
+/* ===== GALAXY ===== */
 const gCanvas = document.getElementById("galaxy");
 const gCtx = gCanvas.getContext("2d");
-gCanvas.width = innerWidth;
-gCanvas.height = innerHeight;
+
+function resize() {
+  gCanvas.width = innerWidth;
+  gCanvas.height = innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
 
 let stars = [];
 
 function startGalaxy() {
-  for (let i = 0; i < 200; i++) {
+  stars = [];
+  for (let i = 0; i < 180; i++) {
     stars.push({
       x: Math.random() * gCanvas.width,
       y: Math.random() * gCanvas.height,
       r: Math.random() * 2,
-      v: Math.random() * 0.6
+      v: Math.random() * 0.6 + 0.2
     });
   }
   animateGalaxy();
 }
 
 function animateGalaxy() {
-  gCtx.clearRect(0,0,gCanvas.width,gCanvas.height);
+  gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
   stars.forEach(s => {
     gCtx.beginPath();
     gCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
@@ -94,9 +91,10 @@ function animateGalaxy() {
   requestAnimationFrame(animateGalaxy);
 }
 
-/* ===== HEART EFFECT ===== */
+/* ===== HEARTS ===== */
 const hCanvas = document.getElementById("heart");
 const hCtx = hCanvas.getContext("2d");
+
 hCanvas.width = innerWidth;
 hCanvas.height = innerHeight;
 
@@ -106,9 +104,9 @@ function startHearts() {
   setInterval(() => {
     hearts.push({
       t: 0,
-      size: Math.random() * 12 + 8
+      size: Math.random() * 14 + 10
     });
-  }, 150);
+  }, 120);
   animateHearts();
 }
 
@@ -121,15 +119,15 @@ function heartY(t) {
 }
 
 function animateHearts() {
-  hCtx.clearRect(0,0,hCanvas.width,hCanvas.height);
+  hCtx.clearRect(0, 0, hCanvas.width, hCanvas.height);
   hearts.forEach(h => {
-    h.t += 0.05;
-    const x = hCanvas.width/2 + heartX(h.t) * h.size;
-    const y = hCanvas.height/2 + heartY(h.t) * h.size;
+    h.t += 0.06;
+    const x = hCanvas.width / 2 + heartX(h.t) * h.size;
+    const y = hCanvas.height / 2 + heartY(h.t) * h.size;
 
-    hCtx.fillStyle = "rgba(255,182,193,0.85)";
+    hCtx.fillStyle = "rgba(255,120,180,0.9)";
     hCtx.beginPath();
-    hCtx.arc(x, y, 2, 0, Math.PI*2);
+    hCtx.arc(x, y, 2.2, 0, Math.PI * 2);
     hCtx.fill();
   });
   requestAnimationFrame(animateHearts);
