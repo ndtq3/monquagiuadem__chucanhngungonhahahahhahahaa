@@ -1,161 +1,43 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Butterfly</title>
-<style>
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  background:black;
-  overflow:hidden;
-  font-family:Segoe UI, sans-serif;
-}
-.scene{
-  position:relative;
-  width:100%;
-  height:100%;
-}
-.butterfly{
-  position:absolute;
-  width:180px;
-  left:50%;
-  top:55%;
-  transform:translate(-50%,-50%);
-  cursor:pointer;
-  animation:flap 1.2s infinite ease-in-out;
-  transition:all 2s ease;
-}
-.butterfly.fly{
-  top:-40%;
-  opacity:0;
-}
-@keyframes flap{
-  0%,100%{transform:translate(-50%,-50%) scale(1);}
-  50%{transform:translate(-50%,-50%) scale(1.08);}
-}
-.text{
-  position:absolute;
-  width:100%;
-  top:45%;
-  text-align:center;
-  color:white;
-  font-size:36px;
-  opacity:0;
-  transition:opacity 1.5s;
-}
-canvas{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Chúc ngủ ngon</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <canvas id="galaxy"></canvas>
 <canvas id="heart"></canvas>
 
-<div class="scene">
-  <img src="assets/butterfly.webp" class="butterfly" id="butterfly">
-  src="data:image/webp;base64,
-UklGRk4AAABXRUJQVlA4IEIAAABQAgCdASoQABAAkA4JZQCdADo
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-">
+<div class="background">
+  <div id="door" class="door"></div>
 
-  <div class="text" id="t1">Chạm để bướm bay</div>
-  <div class="text" id="t2">Gút nai</div>
-  <div class="text" id="t3">Bản kế hoạch</div>
-  <div class="text" id="t4">poster - slide</div>
-  <div class="text" id="t5">dự trù kinh phí</div>
-  <div class="text" id="t6">Bài truyền thông</div>
-  <div class="text" id="t7">deadline</div>
+  <!-- Butterfly -->
+  <img src="assets/b.webp" id="butterfly" class="butterfly">
+
+  <!-- TEXTS -->
+  <div class="text-wrap" style="top:40%">
+    <div class="text" id="text1">Hey bạn nhỏ 🌙</div>
+  </div>
+
+  <div class="text-wrap" style="top:46%">
+    <div class="text" id="text2">Chúc ngủ ngon ✨</div>
+  </div>
+
+  <div class="text-wrap" style="top:52%">
+    <div class="text" id="text3">Ngủ thật sâu nhé</div>
+  </div>
+
+  <div class="text-wrap" style="top:58%">
+    <div class="text" id="text4">Mơ những giấc mơ đẹp</div>
+  </div>
+
+  <div class="text-wrap" style="top:64%">
+    <div class="text" id="text5">Và thức dậy thật dịu dàng 💖</div>
+  </div>
 </div>
 
-<script>
-const texts=[t1,t2,t3,t4,t5,t6,t7];
-let i=0;
-setTimeout(()=>show(0),3000);
-function show(n){
-  texts.forEach(t=>t.style.opacity=0);
-  texts[n].style.opacity=1;
-}
-
-butterfly.onclick=()=>{
-  butterfly.classList.add("fly");
-  startGalaxy();
-  let d=2000;
-  for(let i=1;i<texts.length;i++){
-    setTimeout(()=>show(i),d);
-    d+=2500;
-  }
-  setTimeout(startHearts,d+2000);
-};
-
-/* GALAXY */
-const g=galaxy.getContext("2d");
-galaxy.width=innerWidth;
-galaxy.height=innerHeight;
-let stars=[];
-function startGalaxy(){
-  for(let i=0;i<200;i++){
-    stars.push({
-      x:Math.random()*galaxy.width,
-      y:Math.random()*galaxy.height,
-      r:Math.random()*2,
-      v:Math.random()*0.7
-    });
-  }
-  (function anim(){
-    g.clearRect(0,0,galaxy.width,galaxy.height);
-    stars.forEach(s=>{
-      g.beginPath();
-      g.arc(s.x,s.y,s.r,0,Math.PI*2);
-      g.fillStyle="white";
-      g.fill();
-      s.y+=s.v;
-      if(s.y>galaxy.height) s.y=0;
-    });
-    requestAnimationFrame(anim);
-  })();
-}
-
-/* HEART */
-const h=heart.getContext("2d");
-heart.width=innerWidth;
-heart.height=innerHeight;
-let hearts=[];
-function startHearts(){
-  setInterval(()=>hearts.push({t:0,s:Math.random()*10+8}),150);
-  (function anim(){
-    h.clearRect(0,0,heart.width,heart.height);
-    hearts.forEach(o=>{
-      o.t+=0.05;
-      let x=heart.width/2+(16*Math.sin(o.t)**3)*o.s;
-      let y=heart.height/2-(13*Math.cos(o.t)-5*Math.cos(2*o.t))*o.s;
-      h.beginPath();
-      h.arc(x,y,2,0,Math.PI*2);
-      h.fillStyle="pink";
-      h.fill();
-    });
-    requestAnimationFrame(anim);
-  })();
-}
-  <script>
-  const butterfly = document.getElementById("butterfly");
-
-  butterfly.addEventListener("click", () => {
-    butterfly.classList.add("fly");
-  });
-</script>
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
