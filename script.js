@@ -1,13 +1,13 @@
 const butterfly = document.getElementById("butterfly");
 const door = document.getElementById("door");
 const texts = [
-  text1, text2, text3, text4, text5
+  text1, text2, text3, text4, text5, text6, text7
 ];
 
 let currentText = 0;
 
-/* Show first text after 3s */
-setTimeout(() => showText(0), 3000);
+/* Show first text after 1s */
+setTimeout(() => showText(0), 1000);
 
 function showText(i) {
   texts.forEach(t => t.style.opacity = 0);
@@ -23,7 +23,7 @@ butterfly.addEventListener("click", () => {
   let delay = 2000;
   for (let i = 1; i < texts.length; i++) {
     setTimeout(() => showText(i), delay);
-    delay += 2500;
+    delay += 2000;
   }
 
   /* Show hearts after last text */
@@ -90,16 +90,42 @@ function heartY(t) {
 }
 
 function animateHearts() {
-  hCtx.clearRect(0,0,hCanvas.width,hCanvas.height);
-  hearts.forEach(h => {
-    h.t += 0.05;
-    const x = hCanvas.width/2 + heartX(h.t) * h.size;
-    const y = hCanvas.height/2 + heartY(h.t) * h.size;
+  hCtx.clearRect(0, 0, hCanvas.width, hCanvas.height);
 
-    hCtx.fillStyle = "rgba(255,182,193,0.8)";
+  hearts.forEach((h, i) => {
+    h.t += 0.04;
+
+    const x = hCanvas.width / 2 + heartX(h.t) * h.size;
+    const y = hCanvas.height / 2 + heartY(h.t) * h.size;
+
+    // gradient tim
+    const glow = hCtx.createRadialGradient(x, y, 0, x, y, 12);
+    glow.addColorStop(0, "rgba(255,120,160,1)");
+    glow.addColorStop(0.5, "rgba(255,80,130,0.9)");
+    glow.addColorStop(1, "rgba(255,80,130,0)");
+
+    hCtx.fillStyle = glow;
     hCtx.beginPath();
-    hCtx.arc(x, y, 2, 0, Math.PI*2);
+    hCtx.arc(x, y, 3, 0, Math.PI * 2);
     hCtx.fill();
+
+    // sparkle nhỏ
+    if (Math.random() > 0.92) {
+      hCtx.fillStyle = "rgba(255,255,255,0.9)";
+      hCtx.beginPath();
+      hCtx.arc(
+        x + Math.random() * 6 - 3,
+        y + Math.random() * 6 - 3,
+        1,
+        0,
+        Math.PI * 2
+      );
+      hCtx.fill();
+    }
+
+    // xóa tim cũ
+    if (h.t > Math.PI * 2) hearts.splice(i, 1);
   });
+
   requestAnimationFrame(animateHearts);
 }
